@@ -3,15 +3,16 @@ package main
 import (
 	"fmt"
 
-	"jaytailor.com/bank/file_operations"
+	rd "github.com/Pallinder/go-randomdata"
+	fileIO "jaytailor.com/bank/file_operations"
 )
 
 const accountBalanceFileName = "balance.txt"
 
 func main() {
-	fmt.Println("Welcome to the bank")
+	fmt.Println("Welcome to the bank", rd.FirstName(0))
 
-	var accountBalance, err = file_operations.GetFloatFromFile(accountBalanceFileName)
+	var accountBalance, err = fileIO.GetFloatFromFile(accountBalanceFileName)
 
 	if err != nil {
 		fmt.Println("ERROR")
@@ -35,7 +36,7 @@ func main() {
 			fmt.Scan(&depositAmount)
 			accountBalance += depositAmount
 			fmt.Println("Balance updated! New amount:", accountBalance)
-			file_operations.WriteBalanceToFile(accountBalance, accountBalanceFileName)
+			fileIO.WriteBalanceToFile(accountBalance, accountBalanceFileName)
 		case 3:
 			fmt.Println("How much do you want to withdraw?")
 			var withdrawAmount float64
@@ -49,7 +50,7 @@ func main() {
 			} else {
 				accountBalance -= withdrawAmount
 				fmt.Println("Balance updated! New amount:", accountBalance)
-				file_operations.WriteBalanceToFile(accountBalance, accountBalanceFileName)
+				fileIO.WriteBalanceToFile(accountBalance, accountBalanceFileName)
 			}
 		case 4:
 			fmt.Println("Bye!")
