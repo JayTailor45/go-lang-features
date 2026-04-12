@@ -26,18 +26,29 @@ func (u *User) clearUserName() {
 	u.lastName = ""
 }
 
+func newUser(firstName, lastName, birthday string) *User {
+	return &User{
+		firstName: firstName,
+		lastName:  lastName,
+		birthday:  birthday,
+		createdAt: time.Now(),
+	}
+}
+
 func main() {
 	firstName := getUserData("Please enter your first name")
 	lastName := getUserData("Please enter your last name")
 	birthday := getUserData("Please enter your birthday")
 
 	var appUser User
-	appUser = User{
-		firstName: firstName,
-		lastName:  lastName,
-		// birthday:  birthday, // <-- ommited keys will have nil value set
-		createdAt: time.Now(),
-	}
+	// appUser = User{
+	// 	firstName: firstName,
+	// 	lastName:  lastName,
+	// 	// birthday:  birthday, // <-- ommited keys will have nil value set
+	// 	createdAt: time.Now(),
+	// }
+
+	appUser = *newUser(firstName, lastName, birthday)
 
 	// short hand notation
 	appUser = User{
