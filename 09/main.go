@@ -110,3 +110,14 @@ func printAnything(value any) {
 		fmt.Println("not a integer")
 	}
 }
+
+// generic function to add two values of any type that supports addition
+func add[T int | float64 | string](a, b T) T {
+	return a + b
+}
+
+func testAdd() {
+	fmt.Println(add(10, 6))
+	fmt.Println(add(10.5, 6.12))
+	fmt.Println(add("Hello, ", "World!"))
+}
