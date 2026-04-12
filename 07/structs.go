@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"time"
 )
@@ -26,13 +27,16 @@ func (u *User) clearUserName() {
 	u.lastName = ""
 }
 
-func newUser(firstName, lastName, birthday string) *User {
+func newUser(firstName, lastName, birthday string) (*User, error) {
+	if firstName == "" || lastName == "" || birthday == "" {
+		return nil, errors.New("all fields are required")
+	}
 	return &User{
 		firstName: firstName,
 		lastName:  lastName,
 		birthday:  birthday,
 		createdAt: time.Now(),
-	}
+	}, nil
 }
 
 func main() {
@@ -40,7 +44,7 @@ func main() {
 	lastName := getUserData("Please enter your last name")
 	birthday := getUserData("Please enter your birthday")
 
-	var appUser User
+	var appUser *User
 	// appUser = User{
 	// 	firstName: firstName,
 	// 	lastName:  lastName,
@@ -48,10 +52,8 @@ func main() {
 	// 	createdAt: time.Now(),
 	// }
 
-	appUser = *newUser(firstName, lastName, birthday)
-
 	// short hand notation
-	appUser = User{
+	appUser = &User{
 		firstName,
 		lastName,
 		birthday,
@@ -61,11 +63,19 @@ func main() {
 	appUser.outputUserDetails() // accessing struct method
 	appUser.clearUserName()     // accessing struct method
 	appUser.outputUserDetails() // accessing struct method
+
+	// using constructor function to create struct instance
+	appUser, err := newUser(firstName, lastName, birthday)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 }
 
 func getUserData(promptText string) string {
 	fmt.Print(promptText)
 	var value string
-	fmt.Scan(&value)
+	fmt.Scanln(&value)
 	return value
 }
