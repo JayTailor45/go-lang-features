@@ -88,3 +88,25 @@ func saveAnyData(data any) {
 
 func saveAnyDataWithInterface(data interface{}) {
 }
+
+func printSomething(value any) {
+	// switch over the type of value
+	switch value.(type) {
+	case int:
+		fmt.Println("integer")
+	case float64:
+		fmt.Println("float")
+	default:
+		fmt.Println("unknown type")
+	}
+}
+
+func printAnything(value any) {
+	// custom value checking
+	intVal, ok := value.(int)
+	if ok {
+		fmt.Println("integer: ", intVal)
+	} else {
+		fmt.Println("not a integer")
+	}
+}
