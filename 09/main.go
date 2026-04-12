@@ -82,3 +82,9 @@ func outputData(data outputtable) error {
 	data.Display()
 	return data.Save()
 }
+
+func saveAnyData(data any) {
+}
+
+func saveAnyDataWithInterface(data interface{}) {
+}
