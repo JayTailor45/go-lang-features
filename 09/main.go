@@ -10,6 +10,10 @@ import (
 	"jaytailor.com/note/todo"
 )
 
+type saver interface {
+	Save() error
+}
+
 func main() {
 	title, content := getNoteData()
 
@@ -23,12 +27,10 @@ func main() {
 	}
 
 	todo.Display()
-	err = todo.Save()
+	err = saveData(todo)
 	if err != nil {
-		fmt.Println("Error saving todo: ", err)
 		return
 	}
-	fmt.Println("Saving todo success")
 
 	userNote, err := note.New(title, content)
 	if err != nil {
@@ -38,12 +40,10 @@ func main() {
 
 	userNote.Display()
 
-	err = userNote.Save()
+	err = saveData(userNote)
 	if err != nil {
-		fmt.Println("Error saving note: ", err)
 		return
 	}
-	fmt.Println("Saving note success")
 }
 
 func getNoteData() (string, string) {
@@ -68,4 +68,13 @@ func getUserInput(prompt string) string {
 	text = strings.TrimSuffix(text, "\n")
 	text = strings.TrimSuffix(text, "\r")
 	return text
+}
+
+func saveData(data saver) error {
+	err := data.Save()
+	if err != nil {
+		return err
+	}
+	fmt.Println("Data saved successfully")
+	return nil
 }
