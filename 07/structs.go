@@ -29,6 +29,9 @@ func main() {
 	appUser.OutputUserDetails() // accessing struct method
 	appUser.ClearUserName()     // accessing struct method
 	appUser.OutputUserDetails() // accessing struct method
+
+	admin := user.NewAdmin("test@test.com", "password")
+	admin.OutputUserDetails() // accessing struct method from embedded struct
 }
 
 func getUserData(promptText string) string {
