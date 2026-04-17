@@ -28,11 +28,11 @@ func (fm FileManager) ReadLines() ([]string, error) {
 
 	err = scanner.Err()
 	if err != nil {
-		file.Close()
 		return nil, errors.New("Failed to read lines in the file!")
 	}
 
-	file.Close()
+	// go auto close file once the lexical scope is exited due to error or function return
+	defer file.Close()
 
 	return lines, nil
 }
@@ -48,11 +48,10 @@ func (fm FileManager) WriteData(data any) error {
 	encoder := json.NewEncoder(file)
 	err = encoder.Encode(data)
 	if err != nil {
-		file.Close()
 		return errors.New("Failed to convert data to JSON")
 	}
 
-	file.Close()
+	defer file.Close()
 	return nil
 }
 
