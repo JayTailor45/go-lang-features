@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"jaytailor.com/event-management/models"
+	"jaytailor.com/event-management/utils"
 )
 
 func signup(ctx *gin.Context) {
@@ -25,20 +26,26 @@ func signup(ctx *gin.Context) {
 	ctx.JSON(http.StatusCreated, gin.H{"message": "User successfully created"})
 }
 
-func signin(ctx *gin.Context) {
+func login(ctx *gin.Context) {
 	var user models.User
-	err := ctx.ShouldBindJSON(&user)
 
+	err := ctx.ShouldBindJSON(&user)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse the request"})
 		return
 	}
 
-	err = user.Save()
+	err = user.ValidateCredentials()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to create user"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Could not authenticate"})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "User successfully created"})
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not authenticate"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Login successfully", "token": token})
 }

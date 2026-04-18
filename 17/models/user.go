@@ -1,6 +1,8 @@
 package models
 
 import (
+	"errors"
+
 	"jaytailor.com/event-management/db"
 	"jaytailor.com/event-management/utils"
 )
@@ -34,4 +36,22 @@ func (u *User) Save() error {
 	u.ID = userId
 
 	return err
+}
+
+func (u *User) ValidateCredentials() error {
+	query := "SELECT id, password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+
+	var retrievedPassowrd string
+	err := row.Scan(&u.ID, &retrievedPassowrd)
+	if err != nil {
+		return err
+	}
+
+	passwordValid := utils.CheckPasswordHash(u.Password, retrievedPassowrd)
+	if !passwordValid {
+		return errors.New("Credentials invalid")
+	}
+
+	return nil
 }
