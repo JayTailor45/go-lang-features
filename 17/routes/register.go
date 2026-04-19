@@ -49,3 +49,15 @@ func cancelRegistration(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "User registration successfully cancelled"})
 }
+
+func getAllRegistrations(ctx *gin.Context) {
+	var registrations models.Registration
+
+	result, err := registrations.ListAllRegistrations()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not get registrations" + err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Registration list loaded", "data": result})
+}
