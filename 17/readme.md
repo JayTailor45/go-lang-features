@@ -35,4 +35,4 @@
 
 1. `go mod tidy`
 2. `go build`
-3. `./event-management.ext`
+3. `./event-management.exe`
