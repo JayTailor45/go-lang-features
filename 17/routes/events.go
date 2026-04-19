@@ -57,9 +57,15 @@ func updateEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not fetch the event"})
 		return
 	}
-	_, err = models.GetEventById(eventId)
+	event, err := models.GetEventById(eventId)
+	userId := ctx.GetInt64("userId")
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "Could not find the event"})
+		return
+	}
+
+	if event.UserID != userId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized to perform this action"})
 		return
 	}
 
@@ -87,9 +93,16 @@ func deleteEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not fetch the event"})
 		return
 	}
+
 	event, err := models.GetEventById(eventId)
+	userId := ctx.GetInt64("userId")
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "Could not find the event"})
+		return
+	}
+
+	if event.UserID != userId {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized to perform this action"})
 		return
 	}
 
