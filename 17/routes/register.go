@@ -55,7 +55,7 @@ func getAllRegistrations(ctx *gin.Context) {
 
 	result, err := registrations.ListAllRegistrations()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not get registrations" + err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not get registrations"})
 		return
 	}
 

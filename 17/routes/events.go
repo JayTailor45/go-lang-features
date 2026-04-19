@@ -14,7 +14,7 @@ func getEvents(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Could not fetch events"})
 		return
 	}
-	ctx.JSON(http.StatusOK, events)
+	ctx.JSON(http.StatusOK, gin.H{"data": events})
 }
 
 func getEvent(ctx *gin.Context) {
