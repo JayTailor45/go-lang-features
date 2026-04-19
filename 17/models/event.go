@@ -47,7 +47,7 @@ func GetAllEvents() ([]Event, error) {
 
 	defer rows.Close()
 
-	var events []Event
+	events := []Event{}
 
 	for rows.Next() {
 		var event Event

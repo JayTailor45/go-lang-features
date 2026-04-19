@@ -25,7 +25,7 @@ func (e *Registration) ListAllRegistrations() ([]Registration, error) {
 
 	defer rows.Scan()
 
-	var eventRegistrations []Registration
+	eventRegistrations := []Registration{}
 
 	for rows.Next() {
 		var reg Registration

@@ -51,7 +51,7 @@ func cancelRegistration(ctx *gin.Context) {
 }
 
 func getAllRegistrations(ctx *gin.Context) {
-	var registrations models.Registration
+	registrations := models.Registration{}
 
 	result, err := registrations.ListAllRegistrations()
 	if err != nil {
